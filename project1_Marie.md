@@ -68,7 +68,7 @@ Exploring and restructuring the data
 ```r
 #exploring the data
 attach(Punaise_data) # to ease the manipulation with the data
-View(Punaise_data) # to visualise the dataset
+#View(Punaise_data) # to visualise the dataset
 head (Punaise_data) # to see the first few rows of the data
 ```
 
@@ -138,7 +138,7 @@ summary(Punaise_data) # to get an idea of the stats on the dataset
 ```r
 #restructuring the data
  Punaise_data2 <- Punaise_data[complete.cases(Punaise_data), ] # removing NA's from the dataset
- View(Punaise_data2) # double check that the NA's are gone
+ #View(Punaise_data2) # double check that the NA's are gone
  attach (Punaise_data2)
 ```
 

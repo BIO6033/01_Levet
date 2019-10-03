@@ -394,7 +394,7 @@ library (magrittr) # to use the pipping function </code></pre>
 <p>Exploring and restructuring the data</p>
 <pre class="r"><code>#exploring the data
 attach(Punaise_data) # to ease the manipulation with the data
-View(Punaise_data) # to visualise the dataset
+#View(Punaise_data) # to visualise the dataset
 head (Punaise_data) # to see the first few rows of the data</code></pre>
 <pre><code>##   NO_DECLARATION    DATE_DECLARATION DATE_INSP_VISPRE NBR_EXTERMIN
 ## 1           4254 2012-10-28T16:36:04        9/21/2012            1
@@ -452,7 +452,7 @@ head (Punaise_data) # to see the first few rows of the data</code></pre>
 ## </code></pre>
 <pre class="r"><code>#restructuring the data
  Punaise_data2 &lt;- Punaise_data[complete.cases(Punaise_data), ] # removing NA's from the dataset
- View(Punaise_data2) # double check that the NA's are gone
+ #View(Punaise_data2) # double check that the NA's are gone
  attach (Punaise_data2)</code></pre>
 <pre><code>## The following objects are masked from Punaise_data:
 ## 
