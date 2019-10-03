@@ -1,0 +1,68 @@
+---
+title: "Project1_Manip_Data"
+author: "Marie Levet"
+date: "26/09/2019"
+output: 
+  html_document:
+   keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Import dataset into R studio 
+
+Downloaded the csv file on Montreal city website 
+Saved and placed within the "01_Levet" folder on the desktop
+
+```{r import data into R} 
+library(readxl) #fast excel reader
+# import the data in R with file.choose 
+Punaise_data <-read.csv("/Users/marielevet/Desktop/01_Levet/Punaise_Data.csv") # cheated with the path because I could not find another way to import the csv file. 
+```
+
+```{r import the library}
+library (tidyr) # restructuring the data
+library (dplyr) # doing calculation with the data 
+library (ggplot2) # plot/visualise the data
+library (magrittr) # to use the pipping function 
+```
+
+Exploring and restructuring the data 
+
+```{r exploring the data}
+#exploring the data
+attach(Punaise_data) # to ease the manipulation with the data
+View(Punaise_data) # to visualise the dataset
+head (Punaise_data) # to see the first few rows of the data
+summary(Punaise_data) # to get an idea of the stats on the dataset 
+
+#restructuring the data
+ Punaise_data2 <- Punaise_data[complete.cases(Punaise_data), ] # removing NA's from the dataset
+ View(Punaise_data2) # double check that the NA's are gone
+ attach (Punaise_data2)
+ Punaise_data2 <- select (Punaise_data2, - COORD_X, - COORD_Y, - LONGITUDE, - LATITUDE) # create a subtract of dataset with columns of interest 
+```
+
+Plotting the data 
+  
+```{r Plotting the data}
+# ploting the number of declarations per arrondissement to see the differences between area of the city 
+
+ggplot(Punaise_data, aes (x = NOM_ARROND, y = NO_DECLARATION)) + 
+  geom_point() +
+  theme_classic() + # to remove the background 
+  xlab ("Arrondissement") + ylab ("Nombre de déclaration") + # label x and y axes
+  theme( axis.title.x = element_text(colour = "purple", 
+size =rel(1.5)), axis.text.x = element_text(angle = 45, size = 10, vjust = 0.5)) + # adjust the label of the x axis to make it more visual (defined the angle, size of the title and the distance below the axis line) 
+theme (axis.title.y = element_text(colour = "purple", size = rel(1.5)))
+  
+# plotting the number of extermination per arrondissements
+ggplot(Punaise_data2, aes (x = NBR_EXTERMIN, y = NOM_ARROND)) +
+  geom_boxplot() + 
+  theme_classic() +
+  xlab ("Nombre d'extermination") + ylab ("Arrondissement")
+  
