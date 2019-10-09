@@ -1,0 +1,79 @@
+---
+title: "Project1_Manip_Data"
+author: "Marie Levet"
+date: "26/09/2019"
+output: 
+  html_document:
+   keep_md: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Import dataset into R studio 
+
+Downloaded the csv file on Montreal city website 
+Saved and placed within the "01_Levet" folder on the desktop
+
+```{r import the library}
+library (tidyr) # restructuring the data
+library (dplyr) # doing calculation with the data 
+library (ggplot2) # plot/visualise the data
+library (magrittr) # to use the piping function 
+```
+
+Exploring and restructuring the data 
+
+```{r exploring_data}
+#Exploring the data
+punaise<-readr::read_csv("Punaise_data.csv")
+#view(punaise) to visualise the dataset
+glimpse(punaise) # to see the first few rows of the data
+summary(punaise) # to get an idea of the stats on the dataset 
+```
+
+```{r cleaning_data}
+punaise_clean <- punaise[complete.cases(punaise),] # removing NA's from the dataset
+punaise_clean <-select(punaise_clean, -COORD_X, -COORD_Y, -LONGITUDE, -LATITUDE) # create a subtract of dataset with columns of interest 
+# view(punaise_clean) double check that the NA's are gone and the selection is made
+```
+
+Plotting the data 
+
+```{r plotting_number_of_declarations}
+# plotting the number of declarations per arrondissement to see the differences between area of the city 
+punaise_clean %>%
+  mutate(compte_declaration = NO_DECLARATION/NO_DECLARATION)%>% #Valeur de 1 pour chaque déclaration
+  ggplot(aes(y = compte_declaration, x=NOM_ARROND)) + 
+  geom_col(position = position_stack(reverse = TRUE)) + #Inversion du tableau pour meilleure lecture
+  coord_flip()+
+  theme_classic()+ #Pour mieux voir
+  ylab ("Nombre de déclarations") + xlab ("Arrondissement")+
+  theme(axis.title.x = element_text(colour = "purple", size = rel(1.5)))+
+  theme(axis.title.y = element_text(colour="purple", size=rel(1.5)))
+```
+
+```{r plotting_number_of_extermination}
+# plotting the number of exterminations per arrondissements
+punaise_clean %>%
+  ggplot(aes (y = NBR_EXTERMIN, x = reorder(NOM_ARROND, -NBR_EXTERMIN))) +
+  coord_flip()+
+  geom_col() + 
+  theme_classic() +
+  ylab ("Nombre d'extermination") + xlab ("Arrondissement")+
+  theme(axis.title.x = element_text(colour = "purple", size = rel(1.5)))+
+  theme(axis.title.y = element_text(colour="purple", size=rel(1.5)))
+```
+
+```{r}
+# plotting median of the number of times the exterminator had to come back
+ggplot(punaise_clean, aes (x = NBR_EXTERMIN, y = NOM_ARROND)) +
+  geom_boxplot() + 
+  theme_classic() +
+  xlab ("Nombre d'extermination") + ylab ("Arrondissement")+
+  theme(axis.title.x = element_text(colour = "purple", size = rel(1.5)))+
+  theme(axis.title.y = element_text(colour="purple", size=rel(1.5)))
+```
